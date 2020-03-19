@@ -8,7 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class HeroComponent implements OnInit {
 
   @Input() name: string;
-  @Output() buyEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Output() buyEvent = new EventEmitter<string>();
 
   constructor() { }
 
