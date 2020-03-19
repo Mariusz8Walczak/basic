@@ -1,1 +1,1 @@
-<p>homepage-container works!</p>
+<app-hero *ngFor="let giraffeName of heroNameArray" [name]="giraffeName" (buyEvent)="showName($event)"></app-hero>

@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageContainerComponent implements OnInit {
 
-  constructor() { }
+  public heroNameArray = ['Kamil', 'Mariusz', 'Ola', 'Paulina', 'El Mosqito'];
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  public showName(name) {
+    console.log(name);
   }
 
 }
