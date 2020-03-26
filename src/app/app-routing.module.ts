@@ -5,6 +5,10 @@ import { HomepageContainerComponent } from './homepage/homepage-container/homepa
 
 const routes: Routes = [
   { path: '', component: HomepageContainerComponent },
+  {
+    path: 'lessons',
+    loadChildren: () => import('./lesson2/lesson2.module').then(m => m.Lesson2Module)
+  }
 ];
 
 @NgModule({

@@ -16,7 +16,10 @@ export class HomepageContainerComponent implements OnInit {
   }
 
   public showName(name) {
-    console.log(name);
+    const index = this.heroNameArray.indexOf(name);
+    if (index !== -1) {
+      this.heroNameArray.splice(index, 1);
+    }
   }
 
 }
