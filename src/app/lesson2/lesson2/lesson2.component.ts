@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-lesson2',
@@ -11,28 +12,30 @@ export class Lesson2Component implements OnInit, OnDestroy {
 
   private subject: Subject<boolean>; //event emmiter dla observable
   private someSubscription: Subscription;
+  private sampleArray = [];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    const someObservable = this.getSomeObservable();
+    let someObservable = this.getSomeObservable();
+
     console.log('odpalanie subscribe');
     this.launchObservable(someObservable);
-
-    console.log('odpalanie unsubscribe');
-    this.someSubscription = this.getSomeObservable().subscribe();
-
-    console.log('odpalanie pipe');
-    this.pipeObservable(someObservable);
-
-    console.log('odpalanie map');
-    this.mapObservable(someObservable);
-
-    console.log('odpalanie subject');
-    this.subjectObservable();
-
-    console.log('koncieczenia za pomoca takeUntil');
-    this.endingObservable(someObservable);
+    //
+    // console.log('odpalanie unsubscribe');
+    // this.someSubscription = this.getSomeObservable().subscribe();
+    //
+    // console.log('odpalanie pipe');
+    // this.pipeObservable(someObservable);
+    //
+    // console.log('odpalanie map');
+    // this.mapObservable(someObservable);
+    //
+    // console.log('odpalanie subject');
+    // this.subjectObservable();
+    //
+    // console.log('koncieczenia za pomoca takeUntil');
+    // this.endingObservable(someObservable);
   }
 
   private getSomeObservable() {
@@ -49,12 +52,17 @@ export class Lesson2Component implements OnInit, OnDestroy {
 
   pipeObservable(someObservable: Observable<number>) {
     someObservable.pipe(
-
     );
   }
 
   launchObservable(someObservable: Observable<number>) {
-    console.log('start')
+    this.http.get('https://jsonplaceholder.typicode.com/comments?postId=1').subscribe(
+      (data) => console.log(data),
+      error => console.log(error)
+    );
+
+
+    console.log('start');
     someObservable.subscribe({
       next(x) { console.log('mamy ' + x); },
       error(err) { console.error('jakis błąd ' + err); },
