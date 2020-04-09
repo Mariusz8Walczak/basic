@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, Subscription} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -21,21 +21,25 @@ export class Lesson2Component implements OnInit, OnDestroy {
 
     console.log('odpalanie subscribe');
     this.launchObservable(someObservable);
-    //
-    // console.log('odpalanie unsubscribe');
-    // this.someSubscription = this.getSomeObservable().subscribe();
-    //
-    // console.log('odpalanie pipe');
-    // this.pipeObservable(someObservable);
-    //
-    // console.log('odpalanie map');
-    // this.mapObservable(someObservable);
-    //
-    // console.log('odpalanie subject');
-    // this.subjectObservable();
-    //
-    // console.log('koncieczenia za pomoca takeUntil');
-    // this.endingObservable(someObservable);
+
+    console.log('odpalanie unsubscribe');
+    this.someSubscription = this.getSomeObservable().subscribe();
+    this.someSubscription = this.getSomeObservable().subscribe();
+    this.someSubscription = this.getSomeObservable().subscribe();
+    this.someSubscription = this.getSomeObservable().subscribe();
+    this.someSubscription = this.getSomeObservable().subscribe();
+
+    console.log('odpalanie pipe');
+    this.pipeObservable(someObservable);
+
+    console.log('odpalanie map');
+    this.mapObservable(someObservable);
+
+    console.log('odpalanie subject');
+    this.subjectObservable();
+
+    console.log('koncieczenia za pomoca takeUntil');
+    this.endingObservable(someObservable);
   }
 
   private getSomeObservable() {
@@ -46,7 +50,7 @@ export class Lesson2Component implements OnInit, OnDestroy {
       setTimeout(() => {
         subscriber.next(4);
         subscriber.complete();
-      }, 1000);
+      }, 2000);
     });
   }
 
@@ -55,29 +59,35 @@ export class Lesson2Component implements OnInit, OnDestroy {
     );
   }
 
+  test(x) {
+    this.sampleArray.push(x);
+  }
+
   launchObservable(someObservable: Observable<number>) {
     this.http.get('https://jsonplaceholder.typicode.com/comments?postId=1').subscribe(
       (data) => console.log(data),
       error => console.log(error)
     );
 
+    this.http.get('https://jsonplaceholder.typicode.com/comments?postId=1').pipe(
+      map(post => this.test(post)),
+    ).subscribe();
 
-    console.log('start');
-    someObservable.subscribe({
-      next(x) { console.log('mamy ' + x); },
-      error(err) { console.error('jakis błąd ' + err); },
-      complete() { console.log('koniec'); }
-    });
-    console.log('koniec');
+    this.sampleArray.push('start');
+    someObservable.subscribe(x => this.test(x));
+    this.sampleArray.push('koniec');
   }
 
   mapObservable(someObservable: Observable<number>) {
     someObservable.pipe(
-      map(x => console.log(x * 10))
-    );
+      map(x => x * 10),
+      filter( x => x < 21),
+      map(x => console.log( x - 4 )),
+      takeUntil(this.subject)
+    ).subscribe();
   }
 
-  endingObservable(someObservable: Observable<number>){
+  endingObservable(someObservable: Observable<number>) {
     someObservable.pipe(
       takeUntil(this.subject)
     );

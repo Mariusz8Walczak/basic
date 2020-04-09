@@ -16,6 +16,7 @@ export class HeroComponent implements OnInit {
   }
 
   public buyAction(event, name) {
+
     this.buyEvent.emit(name);
   }
 
